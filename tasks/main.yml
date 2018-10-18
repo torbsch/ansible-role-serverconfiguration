@@ -19,19 +19,15 @@
     line: "{{ deployment_user }} ALL=(ALL) NOPASSWD: ALL"
     validate: 'visudo -cf %s'
 
-- name: Add authorized SSH Keys
+- name: Set authorized SSH Keys from url for user ("{{ deployment_user }}")
   authorized_key:
     user: "{{ deployment_user }}"
+    key: "{{ deployment_user_ssh_key_url }}"
+    exclusive: yes
     state: present
-    key: "{{ lookup('file', '{{ authorized_keys_path }}/{{ item.path }}' )}}"
-  with_filetree: '{{ authorized_keys_path }}'
-
-- name: Remove unauthorized SSH Keys
-  authorized_key:
-    user: "{{ deployment_user }}"
-    state: absent
-    key: "{{ lookup('file', '{{ unauthorized_keys_path }}/{{ item.path }}' )}}"
-  with_filetree: '{{ unauthorized_keys_path }}'
+  when: 
+    - deployment_user != "" 
+    - deployment_user_ssh_key_url != ""    
 
 - name: Add sudo user ("{{ sudo_user }}")
   user:
@@ -42,10 +38,17 @@
     group: sudo
     password: "{{ sudo_user_password | password_hash('sha512') }}"
     state: present
+  when:
+     - sudo_user != ""
 
-- name: Add authorized SSH Keys ("{{ sudo_user }}")
+- name: Set authorized SSH Keys from url for user ("{{ sudo_user }}")
   authorized_key:
-    user: ("{{ sudo_user }}")
+    user: "{{ sudo_user }}"
+    key: "{{ sudo_user_ssh_key_url }}"
+    exclusive: yes
     state: present
-    key: "{{ lookup('file', '{{ authorized_keys_path }}/{{ item.path }}' )}}"
-  with_filetree: '{{ authorized_keys_path }}'
+  when: 
+    - sudo_user != "" 
+    - sudo_user_ssh_key_url != ""
+
+

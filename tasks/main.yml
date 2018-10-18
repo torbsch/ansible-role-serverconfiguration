@@ -2,3 +2,33 @@
 - name: Set timezone to Europe/Berlin
   timezone:
     name: Europe/Berlin
+
+- name: Add ansible user for deployment
+  user:
+    name: "{{ deployment_user }}"
+    comment: ansible deployment
+    shell: /bin/bash
+    createhome: yes
+    state: present
+
+- name: Allow 'ansible' user to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    insertafter: '^# User privilege specification'
+    line: "{{ deployment_user }} ALL=(ALL) NOPASSWD: ALL"
+    validate: 'visudo -cf %s'
+
+- name: Add authorized SSH Keys
+  authorized_key:
+    user: "{{ deployment_user }}"
+    state: present
+    key: "{{ lookup('file', '{{ authorized_keys_path }}/{{ item.path }}' )}}"
+  with_filetree: '{{ authorized_keys_path }}'
+
+- name: Remove unauthorized SSH Keys
+  authorized_key:
+    user: "{{ deployment_user }}"
+    state: absent
+    key: "{{ lookup('file', '{{ unauthorized_keys_path }}/{{ item.path }}' )}}"
+  with_filetree: '{{ unauthorized_keys_path }}'

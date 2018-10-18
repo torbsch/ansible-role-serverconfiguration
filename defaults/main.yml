@@ -1,0 +1,5 @@
+---
+authorized_keys_path: "files/authorized_keys"
+unauthorized_keys_path: "files/unauthorized_keys"
+
+deployment_user: "ansible"

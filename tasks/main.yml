@@ -3,7 +3,7 @@
   timezone:
     name: Europe/Berlin
 
-- name: Add ansible user for deployment
+- name: Add ansible user ("{{ deployment_user }}") for deployment
   user:
     name: "{{ deployment_user }}"
     comment: ansible deployment
@@ -11,7 +11,7 @@
     createhome: yes
     state: present
 
-- name: Allow 'ansible' user to have passwordless sudo
+- name: Allow 'ansible' user ("{{ deployment_user }}") to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
@@ -32,3 +32,20 @@
     state: absent
     key: "{{ lookup('file', '{{ unauthorized_keys_path }}/{{ item.path }}' )}}"
   with_filetree: '{{ unauthorized_keys_path }}'
+
+- name: Add sudo user ("{{ sudo_user }}")
+  user:
+    name: "{{ sudo_user }}"
+    comment: sudo user
+    shell: /bin/bash
+    createhome: yes
+    group: sudo
+    password: "{{ sudo_user_password | password_hash('sha512') }}"
+    state: present
+
+- name: Add authorized SSH Keys ("{{ sudo_user }}")
+  authorized_key:
+    user: ("{{ sudo_user }}")
+    state: present
+    key: "{{ lookup('file', '{{ authorized_keys_path }}/{{ item.path }}' )}}"
+  with_filetree: '{{ authorized_keys_path }}'

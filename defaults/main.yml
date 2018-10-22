@@ -1,7 +1,3 @@
 ---
 deployment_user: "ansible"
 deployment_user_ssh_key_url:
-
-sudo_user: ""
-sudo_user_password: default
-sudo_user_ssh_key_url: ""

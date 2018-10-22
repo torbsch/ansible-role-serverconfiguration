@@ -3,32 +3,7 @@
   timezone:
     name: Europe/Berlin
 
-- name: Add ansible user ("{{ deployment_user }}") for deployment
-  user:
-    name: "{{ deployment_user }}"
-    comment: ansible deployment
-    shell: /bin/bash
-    createhome: yes
-    state: present
-  when:
-    - deployment_user != ""
+- import_tasks: deployment_user.yml
+  when: deployment_user != ""
 
-- name: Allow 'ansible' user ("{{ deployment_user }}") to have passwordless sudo
-  lineinfile:
-    dest: /etc/sudoers
-    state: present
-    insertafter: '^# User privilege specification'
-    line: "{{ deployment_user }} ALL=(ALL) NOPASSWD: ALL"
-    validate: 'visudo -cf %s'
-  when: 
-    - deployment_user != "" 
 
-- name: Set authorized SSH Keys from url for user ("{{ deployment_user }}")
-  authorized_key:
-    user: "{{ deployment_user }}"
-    key: "{{ deployment_user_ssh_key_url }}"
-    exclusive: yes
-    state: present
-  when: 
-    - deployment_user != "" 
-    - deployment_user_ssh_key_url != ""

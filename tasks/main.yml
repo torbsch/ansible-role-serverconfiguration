@@ -3,6 +3,8 @@
   timezone:
     name: Europe/Berlin
 
+- import_tasks: iptables/main.yml
+
 - import_tasks: deployment_user.yml
   when: deployment_user != ""
 
@@ -14,5 +16,3 @@
     group: root
     mode: 0600
   notify: restart sshd
-
-- import_tasks: iptables/main.yml

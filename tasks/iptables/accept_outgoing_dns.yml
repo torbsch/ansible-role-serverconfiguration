@@ -1,0 +1,18 @@
+---
+- name: Accept new outgoing DNS (TCP) connections.  
+  iptables:
+    chain: OUTPUT
+    protocol: tcp
+    destination_port: 53
+    ctstate: NEW
+    jump: ACCEPT
+    comment: Accept new outgoing DNS (TCP) connections.  
+
+- name: Accept new outgoing DNS (UDP) connections. 
+  iptables:
+    chain: OUTPUT
+    protocol: udp
+    destination_port: 53
+    ctstate: NEW
+    jump: ACCEPT
+    comment: Accept new outgoing DNS (UDP) connections.

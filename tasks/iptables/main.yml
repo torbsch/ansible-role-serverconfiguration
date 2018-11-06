@@ -4,3 +4,4 @@
 - import_tasks: accept_loopback_connections.yml
 - import_tasks: chain_policies.yml
 - import_tasks: accept_outgoing_dns.yml
+- import_tasks: accept_outgoing_https.yml

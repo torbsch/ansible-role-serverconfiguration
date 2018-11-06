@@ -1,0 +1,20 @@
+---
+- name: Accept new outgoing HTTP connections.
+  iptables:
+    chain: OUTPUT
+    protocol: tcp
+    destination_port: 80
+    ctstate: NEW
+    syn: match
+    jump: ACCEPT
+    comment: Accept new outgoing HTTP connections.
+
+- name: Accept new outgoing HTTPS connections. 
+  iptables:
+    chain: OUTPUT
+    protocol: tcp
+    destination_port: 443
+    ctstate: NEW
+    syn: match
+    jump: ACCEPT
+    comment: Accept new outgoing HTTPS connections.

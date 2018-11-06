@@ -1,0 +1,12 @@
+---
+- name: Allow related and established connections (Input)
+  iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+
+- name: Allow related and established connections (Output)
+  iptables:
+    chain: OUTPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT

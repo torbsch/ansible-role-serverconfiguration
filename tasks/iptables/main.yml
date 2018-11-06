@@ -1,3 +1,4 @@
 ---
 - import_tasks: accept_incoming_ssh.yml
 - import_tasks: accept_related_established_connections.yml
+- import_tasks: accept_loopback_connections.yml

@@ -1,0 +1,14 @@
+---
+- name: Accept incoming loopback connections
+  iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+    comment: Accept incoming loopback connections.
+
+- name: Allow outgoing loopback connections
+  iptables:
+    chain: OUTPUT
+    out_interface: lo
+    jump: ACCEPT
+    comment: Accept outgoing loopback connections.    

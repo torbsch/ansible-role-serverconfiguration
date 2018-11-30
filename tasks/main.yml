@@ -16,3 +16,5 @@
     group: root
     mode: 0600
   notify: restart sshd
+
+- import_tasks: iptables/main.yml

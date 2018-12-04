@@ -3,8 +3,6 @@
   timezone:
     name: Europe/Berlin
 
-- import_tasks: iptables/main.yml
-
 - import_tasks: deployment_user.yml
   when: deployment_user != ""
 

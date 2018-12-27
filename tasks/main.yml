@@ -1,4 +1,9 @@
 ---
+- name: Set hostname
+  hostname:
+    name: "{{ hostname }}"
+  when: hostname != "default"
+
 - name: Set timezone to Europe/Berlin
   timezone:
     name: Europe/Berlin

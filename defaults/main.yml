@@ -1,6 +1,10 @@
 ---
+# Deployment User
 deployment_user: "ansible"
 deployment_user_ssh_key_url:
+
+# Hostname
+hostname: default 
 
 # SSH Configuration
 PermitRootLogin: 'no'
